@@ -1,0 +1,121 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel2: #1f232c;
+  --line: #2a2f3a;
+  --text: #e9ecf1;
+  --muted: #9aa3b2;
+  --accent: #2ec4b6;
+  --accent2: #ff7a59;
+  --live: #ff3b5c;
+  --radius: 10px;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-size: 15px; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+.btn { background: var(--accent); color: #062b27; border: 0; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.btn:hover { filter: brightness(1.1); }
+.btn.ghost { background: var(--panel2); color: var(--text); }
+.btn.coral { background: var(--accent2); color: #2b0d03; }
+input, select, textarea { width: 100%; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; outline: none; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+label { display: block; font-size: 13px; color: var(--muted); margin: 12px 0 6px; }
+
+/* Barra superior */
+.topbar { position: sticky; top: 0; z-index: 10; height: 56px; display: flex; align-items: center; gap: 18px; padding: 0 20px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.logo { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; letter-spacing: 3px; }
+.logo mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: grid; place-items: center; color: #0f1115; font-size: 14px; }
+.logo b { color: var(--accent); }
+.topbar nav a { color: var(--muted); font-weight: 600; margin-right: 14px; }
+.topbar nav a.active, .topbar nav a:hover { color: var(--text); }
+.topbar .spacer { flex: 1; }
+.userbox { display: flex; gap: 10px; align-items: center; }
+.avatar { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: #0f1115; text-transform: uppercase; flex: none; }
+
+/* Layout */
+.layout { display: flex; min-height: calc(100vh - 56px); }
+.sidebar { width: 230px; background: var(--panel); border-right: 1px solid var(--line); padding: 14px 10px; flex: none; }
+.sidebar h4 { font-size: 12px; text-transform: uppercase; color: var(--muted); margin: 8px 8px 10px; letter-spacing: 2px; }
+.side-item { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 8px; }
+.side-item:hover { background: var(--panel2); }
+.side-item .meta { flex: 1; min-width: 0; }
+.side-item .name { font-weight: 600; font-size: 14px; }
+.side-item .cat { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); flex: none; }
+.dot.off { background: #555; }
+main { flex: 1; padding: 24px 28px; min-width: 0; }
+h1 { font-size: 26px; margin: 0 0 6px; }
+.sub { color: var(--muted); margin: 0 0 20px; }
+
+/* Chips de categorías */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.chip { background: var(--panel2); border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 14px; }
+.chip.active { background: var(--accent); color: #062b27; border-color: var(--accent); }
+.chip small { color: inherit; opacity: .7; margin-left: 4px; }
+
+/* Tarjetas de canal */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.card { display: block; }
+.card .thumb { position: relative; aspect-ratio: 16/9; border-radius: var(--radius); overflow: hidden; background: linear-gradient(135deg, #1d2a33, #2a1f2a); }
+.card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card .thumb .ph { position: absolute; inset: 0; display: grid; place-items: center; font-size: 40px; font-weight: 800; color: rgba(255, 255, 255, .18); text-transform: uppercase; }
+.badge { position: absolute; top: 8px; left: 8px; background: var(--live); color: #fff; font-size: 12px; font-weight: 800; padding: 2px 7px; border-radius: 5px; }
+.badge.offline { background: #3a3f4b; }
+.views { position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,.7); font-size: 12px; padding: 2px 7px; border-radius: 5px; }
+.card .info { display: flex; gap: 10px; margin-top: 10px; }
+.card .title { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .who, .card .cat { color: var(--muted); font-size: 13px; }
+.card:hover .thumb { outline: 3px solid var(--accent); }
+.empty { color: var(--muted); padding: 40px; text-align: center; border: 1px dashed var(--line); border-radius: var(--radius); }
+
+/* Página de canal */
+.channel { display: flex; height: calc(100vh - 56px); }
+.stage { flex: 1; overflow-y: auto; min-width: 0; }
+.player { background: #000; aspect-ratio: 16/9; max-height: 72vh; width: 100%; position: relative; }
+.player video { width: 100%; height: 100%; display: block; background: #000; }
+.offline-screen { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 40%, #1d2a33, #0b0d10); }
+.offline-screen h2 { margin: 6px 0; }
+.chan-head { display: flex; gap: 14px; align-items: center; padding: 16px 22px; }
+.chan-head .avatar { width: 54px; height: 54px; font-size: 22px; }
+.chan-head .grow { flex: 1; min-width: 0; }
+.chan-head h2 { margin: 0; font-size: 20px; }
+.chan-head .ttl { font-weight: 600; margin-top: 2px; }
+.pill { display: inline-block; background: var(--panel2); color: var(--accent); font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin-top: 4px; }
+.stats { color: var(--muted); font-size: 13px; text-align: right; margin-right: 6px; }
+.stats .live-count { color: var(--live); font-weight: 800; }
+.section { padding: 0 22px 24px; }
+.section h3 { margin: 10px 0 12px; }
+.vods { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.vod { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 12px; cursor: pointer; }
+.vod:hover { border-color: var(--accent); }
+.chat { width: 340px; background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; flex: none; }
+.chat header { padding: 14px; border-bottom: 1px solid var(--line); font-weight: 700; text-align: center; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
+.messages { flex: 1; overflow-y: auto; padding: 10px 14px; font-size: 14px; line-height: 1.45; }
+.msg { margin: 4px 0; word-wrap: break-word; }
+.msg b { margin-right: 4px; }
+.msg.sys { color: var(--muted); font-style: italic; font-size: 13px; }
+.chat form { padding: 12px; border-top: 1px solid var(--line); display: flex; gap: 8px; }
+
+/* Formularios y panel */
+.card-box { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px; }
+.auth-wrap { max-width: 400px; margin: 60px auto; }
+.tabs { display: flex; gap: 6px; margin-bottom: 8px; }
+.tabs button { flex: 1; background: transparent; border: 0; color: var(--muted); padding: 10px; font-weight: 700; border-bottom: 2px solid var(--line); cursor: pointer; }
+.tabs button.active { color: var(--text); border-color: var(--accent); }
+.error { color: var(--accent2); min-height: 20px; margin-top: 10px; font-size: 14px; }
+.dash { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 1100px; }
+.keyrow { display: flex; gap: 8px; }
+.keyrow input { font-family: ui-monospace, Consolas, monospace; }
+.status-live { color: var(--live); font-weight: 800; }
+.hint { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.hint code { background: var(--panel2); padding: 1px 6px; border-radius: 4px; color: var(--accent); }
+.toast { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: #062b27; font-weight: 700; padding: 10px 16px; border-radius: 8px; opacity: 0; transition: .3s; pointer-events: none; }
+.toast.show { opacity: 1; }
+
+@media (max-width: 900px) {
+  .sidebar, .chat { display: none; }
+  .dash { grid-template-columns: 1fr; }
+  .channel { height: auto; }
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StreamLab · Mi canal</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main>
+    <h1>Panel del creador</h1>
+    <p class="sub">Configura tu transmisión y conecta OBS Studio</p>
+    <div class="dash">
+      <div class="card-box">
+        <h3 style="margin-top:0">Información del stream</h3>
+        <div>Estado: <span id="status"></span></div>
+        <label>Título</label>
+        <input id="title" maxlength="120">
+        <label>Categoría</label>
+        <select id="category"></select>
+        <label>Descripción del canal</label>
+        <textarea id="bio" rows="3" maxlength="300"></textarea>
+        <button class="btn" style="margin-top:14px" id="save">Guardar cambios</button>
+        <a class="btn ghost" id="viewChannel" style="margin-left: 6px">Ver mi canal</a>
+      </div>
+      <div class="card-box">
+        <h3 style="margin-top:0">Conexión con OBS</h3>
+        <p class="hint">En OBS: <b>Ajustes → Emisión → Servicio: Personalizada</b>. Copia estos dos valores:</p>
+        <label>Servidor</label>
+        <div class="keyrow"><input id="rtmp" readonly><button class="btn ghost" data-copy="rtmp">Copiar</button></div>
+        <label>Clave de retransmisión (¡no la compartas!)</label>
+        <div class="keyrow"><input id="obsKey" type="password" readonly><button class="btn ghost" id="show">👁</button><button class="btn ghost" data-copy="obsKey">Copiar</button></div>
+        <button class="btn coral" style="margin-top:14px" id="regen">Regenerar clave</button>
+        <p class="hint" style="margin-top:16px">Recomendado en OBS Salida: <code>x264</code>, bitrate <code>2500 Kbps</code>, intervalo de fotogramas clave <code>2 s</code>. Video: <code>1280×720</code> a <code>30 fps</code>.</p>
+      </div>
+    </div>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/common.js"></script>
+  <script>
+    (async () => {
+      const me = await renderTopbar('dash');
+      if (!me) return (location.href = "/login.html");
+      const d = await api('/api/dashboard');
+      const status = () => document.getElementById('status').innerHTML = d.is_live ? '<span class="status-live">● EN VIVO</span>' : '<span class="hint">Desconectado</span>';
+      status();
+      title.value = d.title;
+      bio.value = d.bio || '';
+      category.innerHTML = d.categories.map((c) => `<option ${c === d.category ? 'selected' : ''}>${c}</option>`).join('');
+      rtmp.value = d.rtmp_url;
+      obsKey.value = d.obs_key;
+      viewChannel.href = '/c/' + d.username;
+
+      save.onclick = async () => {
+        await api('/api/dashboard', { method: 'PUT', body: { title: title.value, category: category.value, bio: bio.value } });
+        toast('Cambios guardados');
+      };
+      show.onclick = () => obsKey.type = obsKey.type === 'password' ? 'text' : 'password';
+      regen.onclick = async () => {
+        if (!confirm("¿Generar una nueva clave? La anterior dejará de funcionar.")) return;
+        const r = await api('/api/dashboard/regenerate-key', { method: 'POST' });
+        obsKey.value = r.obs_key;
+        toast('Nueva clave generada');
+      };
+      document.querySelectorAll('[data-copy]').forEach((b) => b.onclick = () => {
+        navigator.clipboard?.writeText(document.getElementById(b.dataset.copy).value);
+        toast('Copiado');
+      });
+      io().on('live', (e) => { if (e.username === d.username) { d.is_live = e.live; status(); } });
+    })();
+  </script>
+</body>
+</html>

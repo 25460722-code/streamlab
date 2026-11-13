@@ -1,0 +1,25 @@
+{
+  "name": "streamlab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --disable-warning ExperimentalWarning server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.10",
+    "express": "^4.22.3",
+    "hls.js": "^1.7.4",
+    "node-media-server": "2.7.0",
+    "socket.io": "^4.8.4"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}

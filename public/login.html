@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StreamLab · Acceso</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="card-box">
+      <div class="tabs">
+        <button id="tLogin" class="active">Iniciar sesión</button>
+        <button id="tReg">Registrarse</button>
+      </div>
+      <form id="form">
+        <label>Usuario</label>
+        <input id="username" placeholder="ej. juan_dev" required>
+        <label>Contraseña</label>
+        <input id="password" type="password" placeholder="mínimo 6 caracteres" required>
+        <div class="error" id="err"></div>
+        <button class="btn" style="width:100%;margin-top:6px" id="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+  <script src="/common.js"></script>
+  <script>
+    let mode = location.hash === '#register' ? 'register' : 'login';
+    const setMode = (m) => {
+      mode = m;
+      document.getElementById('tLogin').classList.toggle('active', m === 'login');
+      document.getElementById('tReg').classList.toggle('active', m === 'register');
+      document.getElementById('submit').textContent = m === 'login' ? 'Entrar' : 'Crear cuenta';
+    };
+    document.getElementById('tLogin').onclick = () => setMode('login');
+    document.getElementById('tReg').onclick = () => setMode('register');
+    setMode(mode);
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await api('/api/' + mode, { method: 'POST', body: { username: username.value, password: password.value } });
+        location.href = mode === 'register' ? '/dashboard.html' : '/';
+      } catch (err) {
+        document.getElementById('err').textContent = err.message;
+      }
+    });
+
+    renderTopbar();
+  </script>
+</body>
+</html>
